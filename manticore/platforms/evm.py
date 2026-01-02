@@ -36,7 +36,15 @@ from ..exceptions import EthereumError
 import pyevmasm as EVMAsm
 import logging
 from collections import namedtuple
-import sha3
+try:
+    import sha3
+except ImportError:
+    # Fallback to hashlib for sha3 (Python 3.6+)
+    import hashlib
+    class sha3:
+        @staticmethod
+        def keccak_256(data=b''):
+            return hashlib.sha3_256(data)
 import rlp
 
 logger = logging.getLogger(__name__)

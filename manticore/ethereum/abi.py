@@ -3,7 +3,15 @@ import logging
 import uuid
 
 import re
-import sha3
+try:
+    import sha3
+except ImportError:
+    # Fallback to hashlib for sha3 (Python 3.6+)
+    import hashlib
+    class sha3:
+        @staticmethod
+        def keccak_256(data=b''):
+            return hashlib.sha3_256(data)
 
 from . import abitypes
 from ..core.smtlib import (
